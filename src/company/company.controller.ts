@@ -4,7 +4,6 @@ import { ApiTags, ApiResponse, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagg
 import { CompanyDTO } from '../common/dto/company.dto';
 
 import { CompanyService } from './company.service';
-import { AddressService } from './address.service';
 import { ICompany } from '../common/interfaces/i.company';
 import { AddressDTO } from 'src/common/dto/address.dto';
 
@@ -13,7 +12,6 @@ import { AddressDTO } from 'src/common/dto/address.dto';
 export class CompanyController {
     constructor(
         private readonly companyService: CompanyService,
-        private readonly addressService: AddressService
         ) {}
 
     @Get()
@@ -44,27 +42,7 @@ export class CompanyController {
     public async createCompany(@Response() res, @Body() createCompanyDTO: CompanyDTO) {
         console.log("Imprimiendo");
         console.log(createCompanyDTO);
-        const direcciones: Array<AddressDTO> = createCompanyDTO.addresses;
-        createCompanyDTO.addresses = null;
-        const directionsArray= new Array<string>();
-        let arrayId=null ;
-        const company = await this.companyService.create(createCompanyDTO).then((companySaved) => {
-            arrayId = companySaved._id;
-            Promise.all(direcciones.map(address => {
-            /* update fkeys if needed */
-            return this.addressService.create(address).then(address => directionsArray.push(address._id));
-            }))
-        }).catch(err => console.error('something went wrong...', err)).then(()=> {
-            console.log(directionsArray)
-            //this.companyService.update(arrayId, createCompanyDTO)
-            //Guardar las relaciones
-        });
-        
-        
-    //     if(company){
-    //         const address: any = company.addresses;
-    //   await this.addressService.create(address);
-    //     }
+        const company = await this.companyService.create(createCompanyDTO);
         return res.status(HttpStatus.OK).json(company);
     }
 

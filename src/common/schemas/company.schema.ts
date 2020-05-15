@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { AddressSchema } from './address.schema';
 
 export const CompanySchema = new mongoose.Schema({
 
@@ -10,8 +11,7 @@ export const CompanySchema = new mongoose.Schema({
     image: String,
     description : String,
     addresses: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Address'
+        type: AddressSchema
     }],
     active : Boolean
 });
