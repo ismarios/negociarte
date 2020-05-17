@@ -11,7 +11,7 @@ async function bootstrap() {
     .setTitle('Negociarte API')
     .setDescription('Api for test services from companies project')
     .setVersion('1.0')
-    .addTag('activityType')
+    .addTag('Compañias')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
